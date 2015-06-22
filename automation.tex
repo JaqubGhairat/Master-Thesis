@@ -6,14 +6,14 @@
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{mathtools}
-\usepackage[margin=1.4in]{geometry}
+\usepackage[margin=1.5in]{geometry}
 \usepackage{titlepic}
-\usepackage[LGRx,T1]{fontenc}
-\usepackage[utf8]{inputenc}
+\usepackage[LGR,T1]{fontenc}
+\usepackage[utf8x]{inputenc}
 \usepackage{titlesec}
 \usepackage{amsmath}
 \pagestyle{headings}
-\setcounter{tocdepth}{4}
+\setcounter{tocdepth}{2}
 \newcommand{\hsp}{\hspace{20pt}}
 
 \titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter{ |}\hsp}{0pt}{\Huge\bfseries}
@@ -74,9 +74,9 @@ Acknowledgments goes here.
 \thispagestyle{plain}
 
 
-
+%\newgeometry{margin=1.3in}
   \tableofcontents
-
+%\restoregeometry
 
 
 \chapter{Introduction}
@@ -94,6 +94,10 @@ Acknowledgments goes here.
 \chapter{Theory}
 
  \vspace{-0.6cm}
+
+This chapter provides the reader with fundamental principles and mathematical background covering the wide range of areas in this thesis work.
+
+
 \section{Pulse Oximeters}
 
 
@@ -139,27 +143,69 @@ The estimation of the arterial oxygen saturation and the principle of pulse oxim
 
 \begin{equation}
 \begin{split}
-I = I_{0}e^{-\epsilon c l} \\
-A = -ln(I/I_{0}) = \epsilon c l
+& I = I_{0}e^{-A} \\
+& A = -ln(I/I_{0}) = \epsilon(\lambda) c l
 \end{split}
 \end{equation}
 
-
 \noindent
-where  \emph{I\textsubscript{0}} is the light intensity entering the volume, \emph{l} is the optical path, \emph{c} the substance concentration of the light-absorbing material and $\epsilon$ the molar absorptivity or extinction coefficient.  \emph{A} is the absorbance amount. In the case of multiple absorbers the equations become as following.
+where  \emph{I\textsubscript{0}} is the light intensity entering the volume, \emph{l} is the optical path, \emph{c} the substance concentration of the light-absorbing material and $\epsilon(\lambda)$ the molar absorptivity or extinction coefficient as a function of wavelength.  \emph{A} is the absorbance amount. In the case of multiple absorbers the equations become as following.
 
  \begin{equation}
 \begin{split}
-I = I_{0}e^{\sum\limits_{i}-\epsilon_{i} c_{i} l} \\
-A = \sum\limits_{i} A_{i} = \sum\limits_{i} \epsilon_{i} c_{i} l
+& I = I_{0}e^{-A} \\
+& A = \sum\limits_{i} A_{i} = \sum\limits_{i} \epsilon_{i}(\lambda) c_{i} l
 \end{split}
 \end{equation}
 
+\noindent
+Taking into account for the different concentrations and absorbance coefficients of the human body (bone, tissue, skin and hair), Beer-Lamberts law can be used to express the light intensity of the non-pulsatile components $I_{np} =  I_{0}e^{\sum\limits_{i}-\epsilon_{i}(\lambda) c_{i} l}$.
+The ratio between the maximum light intensity at diastole (peak) and the minimum at systole at wavelength $\lambda_{1}$ is calculated as
+
+ \begin{equation}
+\begin{split}
+\frac{I_{max}}{I_{min}} & =\frac{ I_{np}e^{-(\epsilon_{HbO_{2}}(\lambda_{1}) c_{HbO_{2}}+\epsilon_{Hb}(\lambda_{1}) c_{Hb}) l}}{ I_{np}e^{-(\epsilon_{HbO_{2}}(\lambda_{1}) c_{HbO_{2}}+\epsilon_{Hb}(\lambda_{1}) c_{Hb})(l+\Delta l)}} \\
+& = e^{(\epsilon_{HbO_{2}}(\lambda_{1}) c_{HbO_{2}}+\epsilon_{Hb}(\lambda_{1}) c_{Hb}) \Delta l}
+\end{split}
+\end{equation}
+
+\noindent
+where $\Delta l$ is the optical path length between diastole and systole.  This ratio is independent of the effect of surrounding tissues as well as the incident light intensity. In order to eliminate the optical path length $\Delta l$ also, the ratio of ratios gives the following relationship
+
+
+ \begin{equation}
+\begin{split}
+\Lambda & = \frac{ln(\frac{I_{max}}{I_{min}} |_{\lambda_{1}})}{ ln(\frac{I_{max}}{I_{min}} |_{\lambda_{2}}) } \\
+& = \frac{(\epsilon_{HbO_{2}}(\lambda_{1}) c_{HbO_{2}}+\epsilon_{Hb}(\lambda_{1}) c_{Hb}}{(\epsilon_{HbO_{2}}(\lambda_{2}) c_{HbO_{2}}+\epsilon_{Hb}(\lambda_{2}) c_{Hb}}
+\end{split}
+\end{equation}
+\noindent
+Solving for the arterial oxygen saturation level yields in an equation with a one-to-one relationship between the ratio and saturation. In the second evaluation of the equation below typical values are inserted.
+
+ \begin{equation}
+\begin{split}
+SpO_{2} & = \frac{\epsilon_{Hb}(\lambda_{1}) - \epsilon_{HbO_{2}}(\lambda_{2})\Lambda}{\epsilon_{Hb}(\lambda_{1}) - \epsilon_{HbO_{2}}(\lambda_{1}) + [\epsilon_{HbO_{2}}(\lambda_{2}) - \epsilon_{Hb}(\lambda_{2})]\Lambda} \\ \\
+& = \frac{0.81 - 0.18\Lambda}{0.63 + 0.11\Lambda}
+\end{split}
+\end{equation}
+
+\noindent
+However in most practical settings the above equation is rarely evaluated, instead a normalization technique is used by dividing the peak-to-peak AC component of the PPG signal with the DC component (equation 2.8). Manufacturers then relate the ratio of ratios to empirical calibration in order to obtain the arterial oxygen saturation. The Beer-Lambert model gives erroneous estimates of the true value below 85\% due to scattering of light by red blood cells, hence the use of look-up tables based on empirical studies. 
+
+ \begin{equation}
+\begin{split}
+\Lambda  = \frac{AC_{r}}{DC_{r}} \Big/ \frac{AC_{ir}}{DC_{ir}}
+\end{split}
+\end{equation}
+
+\begin{figure}[H]
+\centering
+  \includegraphics[width=.36\linewidth]{beer}
+  \caption{Calibration curves for pulse oximeters}
+\end{figure}
 
 
 \section{Intradialytic hypotension}
-
-\section{Photopletysmography signal (PPG)}
 
 \section{Optical density}
 
@@ -199,7 +245,7 @@ A = \sum\limits_{i} A_{i} = \sum\limits_{i} \epsilon_{i} c_{i} l
 
 
 \chapter{Method and Implementation}
-
+ \vspace{-0.6cm}
 \section{Material}
 
 \subsection{CardioHolter}
@@ -214,15 +260,15 @@ A = \sum\limits_{i} A_{i} = \sum\limits_{i} \epsilon_{i} c_{i} l
 \subsection{Second implementation}
 
 \chapter{Results}
-
+ \vspace{-0.6cm}
 \chapter{Discussion}
-
+ \vspace{-0.6cm}
 
 
 
  \renewcommand\bibname{References}
  \begin{thebibliography}{1}
-
+ \vspace{-0.6cm}
   \bibitem{ref1} names. Title. {\em journal/place}, date etc.
 
 
